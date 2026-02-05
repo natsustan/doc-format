@@ -1,0 +1,43 @@
+# Word文档格式化配置文件
+
+# 全局字体
+font_name: "STSong"
+
+# 行间距（倍数）
+line_spacing: 1.5
+
+# 页边距（单位：厘米）
+page_margin:
+  top: 2.54
+  bottom: 2.54
+  left: 3.17
+  right: 3.17
+
+# 样式配置
+# size: 字号(pt)
+# align: 对齐方式 (left/center/right)
+# first_indent: 首行缩进字符数（仅正文生效）
+styles:
+  title:
+    size: 26
+    align: center
+  heading1:
+    size: 16
+    align: left
+  heading2:
+    size: 14
+    align: left
+  heading3:
+    size: 12
+    align: left
+  heading4:
+    size: 11
+    align: left
+  normal:
+    size: 12
+    align: left
+    first_indent: 2
+
+# 列表配置
+list:
+  bullet_char: "•"
