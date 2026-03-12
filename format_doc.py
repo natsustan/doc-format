@@ -122,11 +122,50 @@ def format_image_paragraph(paragraph):
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
+def table_has_borders(table) -> bool:
+    """判断表格是否已设置边框"""
+    tbl_pr = table._element.tblPr
+    if tbl_pr is None:
+        return False
+    
+    tbl_borders = tbl_pr.find(qn('w:tblBorders'))
+    if tbl_borders is None:
+        return False
+    
+    for border in tbl_borders:
+        if border.get(qn('w:val')) not in (None, 'nil', 'none'):
+            return True
+    
+    return False
+
+
+def set_table_borders(table):
+    """为表格设置默认边框"""
+    tbl_pr = table._element.tblPr
+    tbl_borders = tbl_pr.find(qn('w:tblBorders'))
+    if tbl_borders is None:
+        tbl_borders = OxmlElement('w:tblBorders')
+        tbl_pr.append(tbl_borders)
+    
+    for border_name in ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']:
+        border = tbl_borders.find(qn(f'w:{border_name}'))
+        if border is None:
+            border = OxmlElement(f'w:{border_name}')
+            tbl_borders.append(border)
+        border.set(qn('w:val'), 'single')
+        border.set(qn('w:sz'), '4')
+        border.set(qn('w:space'), '0')
+        border.set(qn('w:color'), 'auto')
+
+
 def format_table(table, config: dict):
     """格式化表格"""
-    font_name = config['font_name']
-    normal_cfg = config['styles'].get('normal', {'size': 12})
-    font_size = normal_cfg.get('size', 12)
+    table_cfg = config.get('table', {})
+    font_name = table_cfg.get('font_name', config['font_name'])
+    font_size = table_cfg.get('font_size', 10)
+    
+    if not table_has_borders(table):
+        set_table_borders(table)
     
     for row in table.rows:
         for cell in row.cells:

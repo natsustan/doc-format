@@ -6,6 +6,11 @@ font_name: "STSong"
 # 行间距（倍数）
 line_spacing: 1.5
 
+# 表格字体配置
+table:
+  font_name: "STSong"
+  font_size: 10
+
 # 页边距（单位：厘米）
 page_margin:
   top: 2.54
